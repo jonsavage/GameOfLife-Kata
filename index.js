@@ -35,34 +35,26 @@ function doStep() {
 function generateNextState() {
     var neighborCount = 0;
     for (var i = 1; i < cells.length - 2; i++) {
-
         for (var j = 1; j < cells[i].length - 2; j++) {
-            neighborCount = 0;
 
-            if(cells[i-1][j-1].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i][j-1].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i+1][j-1].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i-1][j].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i+1][j].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i-1][j+1].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i][j+1].isAlive) {
-                neighborCount++;
-            }
-            if(cells[i+1][j+1].isAlive) {
-                neighborCount++;
-            }
+            //if(i == 0 && j == 0) {
+            //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
+            //        expandEast();
+            //        expandNorth();
+            //        generateNextState();
+            //        return;
+            //    }
+            //}
+            //
+            //else if(i == 0 && i < cells[i].length) {
+            //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
+            //        expandEast();
+            //        expandNorth();
+            //        generateNextState();
+            //        return;
+            //    }
+            //}
+            neighborCount = countNeighbors(i,j);
 
             if(cells[i][j].isAlive && (neighborCount == 2 || neighborCount == 3)) {
                 cells[i][j].nextState = true;
@@ -72,6 +64,35 @@ function generateNextState() {
             }
         }
     }
+}
+
+function countNeighbors(i, j) {
+    var neighborCount = 0;
+    if(cells[i-1][j-1].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i][j-1].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i+1][j-1].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i-1][j].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i+1][j].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i-1][j+1].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i][j+1].isAlive) {
+        neighborCount++;
+    }
+    if(cells[i+1][j+1].isAlive) {
+        neighborCount++;
+    }
+    return neighborCount;
 }
 
 function advanceCellStates() {
