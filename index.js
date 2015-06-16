@@ -151,11 +151,12 @@ function expandSouth() {
         newRow[i].cell.innerHTML = "0";
         newRow[i].isAlive = false;
         newRow[i].nextState = false;
-        newRow[i].x = i;
-        newRow[i].y = cells[1].length;
+        newRow[i].cell.y = cells.length;
+        newRow[i].cell.x = i;
 
         newRow[i].cell.onclick = function() {
-
+            flipCell(this.x, this.y);
+            updateTable();
         };
 
     }
