@@ -10,15 +10,18 @@
         <input type="button" value="addBlinker" onclick="addBlinker();">
         <input type="button" value="addCube" onclick="addCube();">
         <input type="button" value="step" onclick="doStep();">
+        <br>
 
         <table id="grid">
 
         </table>
         <br>
 
-        <input type="button" value="increaseSize" onclick="expandSouth();">
-        <br>
-        <input type="button" value="print array" onclick="printArray();">
-
+        <div class="controls">
+            <input type="button" value="expand east" onclick="expandEast();">
+            <input type="button" value="expand south" onclick="expandSouth();">
+            <br>
+            <input type="button" value="print array" onclick="printArray();">
+        </div>
     </body>
 </html>

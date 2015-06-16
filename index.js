@@ -1,4 +1,4 @@
-var DEFAULT_SIZE = 5;
+var DEFAULT_SIZE = 10;
 
 
 var cells;
@@ -80,8 +80,8 @@ function advanceCellStates() {
 }
 
 function updateTable() {
-    for (var i = 0; i < cells[0].length; i++) {
-        for (var j = 0; j < cells[i].length; j++) {
+    for (var i = 0; i < cells.length - 1; i++) {
+        for (var j = 0; j < cells[i].length - 1; j++) {
             cells[i][j].updateCell();
         }
     }
@@ -116,51 +116,39 @@ function setupTable() {
     }
 }
 
-function expandSouth() {
-    expandEast();
-    var newRow = new Array(cells.length);
+function expandEast() {
 
-    rows.concat(table.insertRow(cells.length));
-    for (var i = 0; i < cells[0].length + 1; i++) {
-        cells[i].concat(new cell());
-        cells[i][cells[i].length].cell = rows[i].insertCell(cells[i].length);
-        cells[i][cells[i].length].cell.innerHTML = "0";
-        cells[i][cells[i].length].isAlive = false;
-        cells[i][cells[i].length].nextState = false;
+    for (var i = 0; i < cells.length; i++) {
+        cells[i] = cells[i].concat(new cell());
+        cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
+        cells[i][cells[i].length-1].cell.innerHTML = "0";
+        cells[i][cells[i].length-1].cell.onclick = function() {
+            var a = i;
+            updateTable();
+        };
+        cells[i][cells[i].length-1].isAlive = false;
+        cells[i][cells[i].length-1].nextState = false;
+    }
+
+    updateTable();
+}
+
+function expandSouth() {
+
+    //cells = cells.concat(new Array(cells[0].length));
+    rows = rows.concat(table.insertRow(cells.length));
+    var newRow = new Array(cells[0].length);
+
+    for (var i =0; i < cells[0].length; i++) {
+        newRow[i] = new cell();
+        newRow[i].cell = rows[rows.length - 1].insertCell(i);
+        newRow[i].cell.innerHTML = "0";
+        newRow[i].isAlive = false;
+        newRow[i].nextState = false;
     }
 
     cells.push(newRow);
     updateTable();
-}
-
-//function expandSouth() {
-//    expandEast();
-//    var newRow = new Array(cells.length);
-//
-//    rows.concat(table.insertRow(cells.length));
-//    for (var i = 0; i < cells[0].length + 1; i++) {
-//        cells[i].concat(new cell());
-//        cells[i][cells[i].length].cell = rows[i].insertCell(cells[i].length);
-//        cells[i][cells[i].length].cell.innerHTML = "0";
-//        cells[i][cells[i].length].isAlive = false;
-//        cells[i][cells[i].length].nextState = false;
-//    }
-//
-//    cells.push(newRow);
-//    updateTable();
-//}
-
-function expandEast() {
-    var tempCell;
-    for (var i =0; i < cells[0].length; i++) {
-        tempCell = new cell();
-        tempCell.isAlive = false;
-        tempCell.nextState = false;
-        tempCell.cell = rows[i].insertCell(cells[i].length);
-        tempCell.cell.innerHTML = "0";
-        cells[i].concat(tempCell);
-
-    }
 }
 
 // http://www.stephanimoroni.com/how-to-create-a-2d-array-in-javascript/
