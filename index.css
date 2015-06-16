@@ -1,0 +1,22 @@
+/*table, th, td {*/
+    /*border: 1px solid black;*/
+/*}*/
+
+td {
+    width: 20px;
+    height: 20px;
+    border-color: red;
+}
+
+.controls {
+    position: absolute;
+    bottom: 0;
+}
+
+.alive {
+    background-color: blue;
+}
+
+.dead {
+    background-color: grey;
+}
