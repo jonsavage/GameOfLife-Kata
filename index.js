@@ -1,5 +1,6 @@
 var DEFAULT_SIZE = 10;
-
+var ALIVE_CLASSNAME = "alive";
+var DEAD_CLASSNAME = "dead";
 
 var cells;
 var table;
@@ -11,6 +12,7 @@ function initGame() {
     cells = Array.matrix(DEFAULT_SIZE,DEFAULT_SIZE);
 
     setupTable();
+    updateTable();
 }
 
 function cell() {
@@ -20,7 +22,7 @@ function cell() {
     var x;
     var y;
     this.updateCell = function() {
-        this.cell.innerHTML = this.isAlive ? "X" : "0";
+        this.cell.className = this.isAlive ? ALIVE_CLASSNAME : DEAD_CLASSNAME;
     }
 }
 
@@ -89,21 +91,6 @@ function updateTable() {
     }
 }
 
-function addBlinker() {
-    cells[4][3].isAlive = true;
-    cells[4][4].isAlive = true;
-    cells[4][5].isAlive = true;
-    updateTable();
-}
-
-function addCube() {
-    cells[4][3].isAlive = true;
-    cells[4][4].isAlive = true;
-    cells[5][3].isAlive = true;
-    cells[5][4].isAlive = true;
-    updateTable();
-}
-
 function setupTable() {
     table.innerHTML = "";
     rows = new Array(DEFAULT_SIZE);
@@ -112,7 +99,13 @@ function setupTable() {
         row = table.insertRow(i);
         for (var j = 0; j < cells[i].length; j++) {
             cells[i][j].cell = row.insertCell(j);
-            cells[i][j].cell.innerHTML = cells[i][j].isAlive ? "X" : "0";
+            //cells[i][j].cell.className = cells[i][j].isAlive ? ALIVE_CLASSNAME : DEAD_CLASSNAME;
+            cells[i][j].cell.x = j;
+            cells[i][j].cell.y = i;
+            cells[i][j].cell.onclick = function() {
+                flipCell(this.x, this.y);
+                updateTable();
+            };
         }
         rows[i] = row;
     }
@@ -123,7 +116,7 @@ function expandEast() {
     for (var i = 0; i < cells.length; i++) {
         cells[i] = cells[i].concat(new cell());
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
-        cells[i][cells[i].length-1].cell.innerHTML = "0";
+        //cells[i][cells[i].length-1].cell.innerHTML = "0";
 
         cells[i][cells[i].length-1].isAlive = false;
         cells[i][cells[i].length-1].nextState = false;
@@ -148,7 +141,7 @@ function expandSouth() {
     for (var i = 0; i < cells[0].length; i++) {
         newRow[i] = new cell();
         newRow[i].cell = rows[rows.length - 1].insertCell(i);
-        newRow[i].cell.innerHTML = "0";
+        //newRow[i].cell.innerHTML = "0";
         newRow[i].isAlive = false;
         newRow[i].nextState = false;
         newRow[i].cell.y = cells.length;
@@ -187,7 +180,6 @@ Array.matrix = function(numrows, numcols){
 function printArray() {
     console.log(cells);
 }
-
 
 
 
