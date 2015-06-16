@@ -17,6 +17,8 @@ function cell() {
     var isAlive;
     var nextState;
     var cell;
+    var x;
+    var y;
     this.updateCell = function() {
         this.cell.innerHTML = this.isAlive ? "X" : "0";
     }
@@ -30,7 +32,7 @@ function doStep() {
 
 function generateNextState() {
     var neighborCount = 0;
-    for (var i = 1; i < cells[0].length - 2; i++) {
+    for (var i = 1; i < cells.length - 2; i++) {
 
         for (var j = 1; j < cells[i].length - 2; j++) {
             neighborCount = 0;
@@ -71,7 +73,7 @@ function generateNextState() {
 }
 
 function advanceCellStates() {
-    for (var i = 0; i < cells[0].length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         for (var j = 0; j < cells[i].length; j++) {
             cells[i][j].isAlive = cells[i][j].nextState;
             cells[i][j].nextState = false;
@@ -122,12 +124,16 @@ function expandEast() {
         cells[i] = cells[i].concat(new cell());
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
         cells[i][cells[i].length-1].cell.innerHTML = "0";
-        cells[i][cells[i].length-1].cell.onclick = function() {
-            var a = i;
-            updateTable();
-        };
+
         cells[i][cells[i].length-1].isAlive = false;
         cells[i][cells[i].length-1].nextState = false;
+        cells[i][cells[i].length-1].cell.y = i;
+        cells[i][cells[i].length-1].cell.x = cells[i].length-1;
+
+        cells[i][cells[i].length-1].cell.onclick = function() {
+            flipCell(this.x, this.y);
+            updateTable();
+        };
     }
 
     updateTable();
@@ -139,15 +145,27 @@ function expandSouth() {
     rows = rows.concat(table.insertRow(cells.length));
     var newRow = new Array(cells[0].length);
 
-    for (var i =0; i < cells[0].length; i++) {
+    for (var i = 0; i < cells[0].length; i++) {
         newRow[i] = new cell();
         newRow[i].cell = rows[rows.length - 1].insertCell(i);
         newRow[i].cell.innerHTML = "0";
         newRow[i].isAlive = false;
         newRow[i].nextState = false;
+        newRow[i].x = i;
+        newRow[i].y = cells[1].length;
+
+        newRow[i].cell.onclick = function() {
+
+        };
+
     }
 
     cells.push(newRow);
+    updateTable();
+}
+
+function flipCell(x, y) {
+    cells[y][x].isAlive = !cells[y][x].isAlive;
     updateTable();
 }
 
