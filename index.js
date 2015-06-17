@@ -1,4 +1,4 @@
-var DEFAULT_SIZE = 10;
+var DEFAULT_SIZE = 5;
 var ALIVE_CLASSNAME = "alive";
 var DEAD_CLASSNAME = "dead";
 
@@ -34,18 +34,24 @@ function doStep() {
 
 function generateNextState() {
     var neighborCount = 0;
-    for (var i = 1; i < cells.length - 2; i++) {
-        for (var j = 1; j < cells[i].length - 2; j++) {
+    for (var i = 1; i < cells.length - 1; i++) {
+        for (var j = 1; j < cells[i].length - 1; j++) {
+
 
             //if(i == 0 && j == 0) {
             //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
+            //        cells[0][0].isAlive = true;
+            //        updateTable();
+            //        expandEast();
             //        expandEast();
             //        expandNorth();
+            //        expandNorth();
             //        generateNextState();
+            //
             //        return;
             //    }
             //}
-            //
+
             //else if(i == 0 && i < cells[i].length) {
             //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
             //        expandEast();
@@ -105,8 +111,8 @@ function advanceCellStates() {
 }
 
 function updateTable() {
-    for (var i = 0; i < cells.length - 1; i++) {
-        for (var j = 0; j < cells[i].length - 1; j++) {
+    for (var i = 0; i < cells.length; i++) {
+        for (var j = 0; j < cells[i].length; j++) {
             cells[i][j].updateCell();
         }
     }
@@ -150,6 +156,22 @@ function expandEast() {
         };
     }
 
+    updateTable();
+}
+
+function expandWest() {
+
+    for (var i = 0; i < cells.length; i++) {
+        cells[i] = cells[i].reverse();
+
+        cells[i] = cells[i].concat(new cell());
+        cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
+
+        cells[i][cells[i].length-1].isAlive = false;
+        cells[i][cells[i].length-1].nextState = false;
+        cells[i] = cells[i].reverse();
+    }
+    setupTable();
     updateTable();
 }
 
