@@ -34,13 +34,13 @@ function doStep() {
 
 function generateNextState() {
     var neighborCount = 0;
-    for (var i = 0; i < cells.length - 1; i++) {
-        for (var j = 0; j < cells[i].length - 1; j++) {
+    for (var i = 0; i < cells.length; i++) {
+        for (var j = 0; j < cells[i].length; j++) {
 
 
             if(i == 0 && j == 0) {
                 if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
-                    cells[0][0].isAlive = true;
+                    cells[i][j].nextState = true;
                     expandWest();
                     expandNorth();
                     generateNextState();
@@ -48,14 +48,24 @@ function generateNextState() {
                 }
             }
 
-            //else if(i == 0 && i < cells[i].length) {
-            //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
-            //        expandEast();
-            //        expandNorth();
-            //        generateNextState();
-            //        return;
-            //    }
-            //}
+            else if(i == 0 && j < cells[i].length - 2) {
+                if(cells[i+1][j-1].isAlive && (cells[i+1][j].isAlive && cells[i+1][j+1].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandNorth();
+                    generateNextState();
+                    return;
+                }
+            }
+
+            else if(i == 0 && j == cells[i].length - 1) {
+                if(cells[i][j-1].isAlive && (cells[i+1][j-1].isAlive && cells[i+1][j].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandNorth();
+                    expandEast();
+                    generateNextState();
+                    return;
+                }
+            }
             neighborCount = countNeighbors(i,j);
 
             if(cells[i][j].isAlive && (neighborCount == 2 || neighborCount == 3)) {
