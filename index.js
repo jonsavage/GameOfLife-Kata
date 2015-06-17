@@ -88,6 +88,16 @@ function generateNextState() {
                 }
             }
 
+            else if(i == cells.length - 1 && j == 0) { // bottom left corner auto expand
+                if(cells[i-1][j].isAlive && (cells[i-1][j+1].isAlive && cells[i][j+1].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandWest();
+                    expandSouth();
+                    generateNextState();
+                    return;
+                }
+            }
+
 
 
 
