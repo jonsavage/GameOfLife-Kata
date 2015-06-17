@@ -1,20 +1,45 @@
-var DEFAULT_SIZE = 5;
+var DEFAULT_SIZE = 10;
 var ALIVE_CLASSNAME = "alive";
 var DEAD_CLASSNAME = "dead";
+var SCROLL_RATE = 60;
 
 var timer;
-
 var cells;
 var table;
 var rows;
-var stuff;
+
+// Mouse wheel zoom magic
+// http://www.sitepoint.com/html5-javascript-mouse-wheel/
+function MouseWheelHandler(e) {
+    e.preventDefault();
+    // cross-browser wheel delta
+    var e = window.event || e; // old IE support
+    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    table.style.width = table.offsetWidth + SCROLL_RATE * delta + "px";
+    table.style.height = table.offsetWidth + SCROLL_RATE * delta + "px";
+    return false;
+}
 
 function initGame() {
     table = document.getElementById("grid");
+    setupScrolling();
+
     cells = Array.matrix(DEFAULT_SIZE,DEFAULT_SIZE);
 
     setupTable();
     updateTable();
+}
+
+function setupScrolling() {
+    if (table.addEventListener) {
+        // IE9, Chrome, Safari, Opera
+        table.addEventListener("mousewheel", MouseWheelHandler, false);
+        // Firefox
+        table.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+    }
+    // IE 6/7/8
+    else table.attachEvent("onmousewheel", MouseWheelHandler);
+
 }
 
 function cell() {
@@ -38,7 +63,6 @@ function generateNextState() {
     var neighborCount = 0;
     for (var i = 0; i < cells.length; i++) {
         for (var j = 0; j < cells[i].length; j++) {
-
 
             if(i == 0 && j == 0) { // top left corner auto expand
                 if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
@@ -115,11 +139,6 @@ function generateNextState() {
                     return;
                 }
             }
-
-
-
-
-
 
             neighborCount = countNeighbors(i,j);
 
