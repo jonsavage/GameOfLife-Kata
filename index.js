@@ -361,7 +361,6 @@ Array.matrix = function(numrows, numcols){
 function setupSlider() {
     $("#speedSlider").bind("slider:changed", function (event, data) {
         timerIntervalMultiplier = data.value;
-        console.log(timerIntervalMultiplier);
         if(timer) {
             stopButtonPushed();
             runButtonPushed();

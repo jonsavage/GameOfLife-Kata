@@ -43,6 +43,15 @@ button:disabled {
     background-color: darkblue;
 }
 
+#speedSliderDiv {
+    width: 30%;
+    left:auto;
+    right:auto;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+
 #speedSlider {
     text-align: center;
 }

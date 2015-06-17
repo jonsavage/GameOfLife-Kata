@@ -32,10 +32,10 @@
             <input type="button" value="Expand Table" onclick="expandTableButtonPushed();">
 
         </div>
-        <input type="text" id="speedSlider" data-slider="true" data-slider-theme="volume" value="1.0" data-slider-range="0.1,2.0">
+        <div id="speedSliderDiv"><input id="speedSlider" type="text"data-slider="true" value="1.0" data-slider-range="0.1,2.0"></div>
+
         <h2>Rules:</h2>
         <p>
-
             1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.<br>
             2. Any live cell with more than three live neighbours dies, as if by overcrowding. <br>
             3. Any live cell with two or three live neighbours lives on to the next generation. <br>
