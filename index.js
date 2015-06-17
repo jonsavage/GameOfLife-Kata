@@ -2,6 +2,8 @@ var DEFAULT_SIZE = 5;
 var ALIVE_CLASSNAME = "alive";
 var DEAD_CLASSNAME = "dead";
 
+var timer;
+
 var cells;
 var table;
 var rows;
@@ -67,6 +69,16 @@ function generateNextState() {
                 }
             }
 
+            else if(i == cells.length - 1 && j == cells[i].length - 1) { // bottom right corner auto expand
+                if(cells[i][j-1].isAlive && (cells[i-1][j-1].isAlive && cells[i-1][j].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandEast();
+                    expandSouth();
+                    generateNextState();
+                    return;
+                }
+            }
+
             else if(j == cells[i].length - 1) { // rightmost column auto expand
                 if(cells[i-1][j-1].isAlive && (cells[i][j-1].isAlive && cells[i+1][j-1].isAlive)) {
                     cells[i][j].nextState = true;
@@ -75,6 +87,10 @@ function generateNextState() {
                     return;
                 }
             }
+
+
+
+
 
 
             neighborCount = countNeighbors(i,j);
@@ -263,6 +279,14 @@ Array.matrix = function(numrows, numcols){
 
 function printArray() {
     console.log(cells);
+}
+
+function run() {
+    timer = window.setInterval(function() { doStep() }, 500);
+}
+
+function stop() {
+    window.clearInterval(timer);
 }
 
 
