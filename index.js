@@ -8,21 +8,10 @@ var cells;
 var table;
 var rows;
 
-// Mouse wheel zoom magic
-// http://www.sitepoint.com/html5-javascript-mouse-wheel/
-function MouseWheelHandler(e) {
-    e.preventDefault();
-    // cross-browser wheel delta
-    var e = window.event || e; // old IE support
-    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-    table.style.width = table.offsetWidth + SCROLL_RATE * delta + "px";
-    table.style.height = table.offsetWidth + SCROLL_RATE * delta + "px";
-    return false;
-}
-
 function initGame() {
-    table = document.getElementById("grid");
+    initDOMElements();
     setupScrolling();
+    setupButtonStates();
 
     cells = Array.matrix(DEFAULT_SIZE,DEFAULT_SIZE);
 
@@ -37,17 +26,6 @@ function setupScrolling() {
     }
     // IE 6/7/8
     else table.attachEvent("onmousewheel", MouseWheelHandler);
-}
-
-function cell() {
-    var isAlive;
-    var nextState;
-    var cell;
-    var x;
-    var y;
-    this.updateCell = function() {
-        this.cell.className = this.isAlive ? ALIVE_CLASSNAME : DEAD_CLASSNAME;
-    }
 }
 
 function doStep() {
@@ -285,9 +263,55 @@ function expandSouth() {
     updateTable();
 }
 
-function flipCell(x, y) {
-    cells[y][x].isAlive = !cells[y][x].isAlive;
+function cell() {
+    var isAlive;
+    var nextState;
+    var cell;
+    var x;
+    var y;
+    this.updateCell = function() {
+        this.cell.className = this.isAlive ? ALIVE_CLASSNAME : DEAD_CLASSNAME;
+    };
+    this.flip = function() {
+        this.isAlive = !this.isAlive;
+    };
+}
+
+function runButtonPushed() {
+    if (!timer) {
+        timer = window.setInterval(function() { doStep() }, 500);
+    }
+
+}
+
+function stopButtonPushed() {
+    window.clearInterval(timer);
+    timer = null;
+}
+
+var cellClickHandler = function() {
+    cells[this.y][this.x].flip();
     updateTable();
+};
+
+// Mouse wheel zoom magic
+// http://www.sitepoint.com/html5-javascript-mouse-wheel/
+function MouseWheelHandler(e) {
+    e.preventDefault();
+    // cross-browser wheel delta
+    var e = window.event || e; // old IE support
+    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+    table.style.width = table.offsetWidth + SCROLL_RATE * delta + "px";
+    table.style.height = table.offsetWidth + SCROLL_RATE * delta + "px";
+    return false;
+}
+
+function setupButtonStates() {
+    document.getElementById("stopButton").isDisabled = true;
+}
+
+function initDOMElements() {
+    table = document.getElementById("grid");
 }
 
 // http://www.stephanimoroni.com/how-to-create-a-2d-array-in-javascript/
@@ -304,22 +328,7 @@ Array.matrix = function(numrows, numcols){
     return arr;
 };
 
-function printArray() {
-    console.log(cells);
-}
 
-function run() {
-    timer = window.setInterval(function() { doStep() }, 500);
-}
-
-function stop() {
-    window.clearInterval(timer);
-}
-
-var cellClickHandler = function() {
-    flipCell(this.x, this.y);
-    updateTable();
-};
 
 
 

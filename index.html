@@ -8,8 +8,8 @@
     <body onload="initGame()">
         <script src="index.js"></script>
         <input type="button" value="step" onclick="doStep();">
-        <input type="button" value="run" onclick="run();">
-        <input type="button" value="stop" onclick="stop();">
+        <input type="button" id="runButton"value="run" onclick="runButtonPushed();">
+        <input type="button" id="stopButton" value="stop"  onclick="stopButtonPushed();">
         <br>
 
         <div id="table_div">
@@ -23,8 +23,6 @@
             <input type="button" value="expand west" onclick="expandWest();">
             <input type="button" value="expand south" onclick="expandSouth();">
             <input type="button" value="expand north" onclick="expandNorth();">
-            <br>
-            <input type="button" value="print array" onclick="printArray();">
         </div>
     </body>
 </html>
