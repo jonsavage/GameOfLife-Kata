@@ -2,6 +2,8 @@ var DEFAULT_SIZE = 10;
 var ALIVE_CLASSNAME = "alive";
 var DEAD_CLASSNAME = "dead";
 var SCROLL_RATE = 60;
+var TIMER_INTERVAL = 500; // ms
+var timerIntervalMultiplier = 1.0;
 
 var timer;
 var cells;
@@ -12,10 +14,11 @@ function initGame() {
     initDOMElements();
     setupScrolling();
     setupButtonStates();
+    setupSlider();
 
     cells = Array.matrix(DEFAULT_SIZE,DEFAULT_SIZE);
 
-    setupTable();
+    initTable();
     updateTable();
 }
 
@@ -121,6 +124,7 @@ function generateNextState() {
 
 function countNeighbors(i, j) {
     var neighborCount = 0;
+
     if(typeof cells[i-1] == "undefined")
         return 0;
     if(typeof cells[i+1] == "undefined")
@@ -129,6 +133,7 @@ function countNeighbors(i, j) {
         return 0;
     if(typeof cells[i][j+1] == "undefined")
         return 0;
+
     if(cells[i-1][j-1].isAlive) {
         neighborCount++;
     }
@@ -173,7 +178,7 @@ function updateTable() {
     }
 }
 
-function setupTable() {
+function initTable() {
     table.innerHTML = "";
     rows = new Array(cells.length);
     var row;
@@ -189,7 +194,6 @@ function setupTable() {
         rows[i] = row;
     }
 }
-
 
 function expandEast() {
 
@@ -210,17 +214,16 @@ function expandWest() {
 
     for (var i = 0; i < cells.length; i++) {
         cells[i] = cells[i].reverse();
-
         cells[i] = cells[i].concat(new cell());
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
-
         cells[i] = cells[i].reverse();
     }
-    setupTable();
+    initTable();
     updateTable();
 }
 
 function expandNorth() {
+
     var newRow = new Array(cells[0].length);
     cells = cells.reverse();
     cells.push(newRow);
@@ -229,7 +232,7 @@ function expandNorth() {
         cells[0][i] = new cell();
     }
 
-    setupTable();
+    initTable();
     updateTable();
 }
 
@@ -264,15 +267,43 @@ function cell() {
 }
 
 function runButtonPushed() {
-    if (!timer) {
-        timer = window.setInterval(function() { doStep() }, 500);
-    }
-
+    timer = window.setInterval(function() {
+        doStep();
+    }, timerIntervalMultiplier * TIMER_INTERVAL);
+    disableRunButton();
+    enableStopButton();
 }
 
 function stopButtonPushed() {
     window.clearInterval(timer);
     timer = null;
+    enableRunButton();
+    disableStopButton();
+}
+
+function enableStopButton() {
+    document.getElementById("stopButton").disabled = false;
+    //document.getElementById("stopButton").style.backgroundColor = null;
+}
+
+function disableStopButton() {
+    document.getElementById("stopButton").disabled = true;
+    //document.getElementById("stopButton").style.backgroundColor = null;
+}
+
+function disableRunButton() {
+    document.getElementById("runButton").disabled = true;
+}
+
+function enableRunButton() {
+    document.getElementById("runButton").disabled = false;
+}
+
+function expandTableButtonPushed() {
+    expandEast();
+    expandWest();
+    expandNorth();
+    expandSouth();
 }
 
 var cellClickHandler = function() {
@@ -305,7 +336,7 @@ function MouseWheelHandler(e) {
 }
 
 function setupButtonStates() {
-    document.getElementById("stopButton").isDisabled = true;
+    disableStopButton();
 }
 
 function initDOMElements() {
@@ -326,14 +357,15 @@ Array.matrix = function(numrows, numcols){
     return arr;
 };
 
-
-
-
-
-
-
-
-
-
-
+// http://loopj.com/jquery-simple-slider/
+function setupSlider() {
+    $("#speedSlider").bind("slider:changed", function (event, data) {
+        timerIntervalMultiplier = data.value;
+        console.log(timerIntervalMultiplier);
+        if(timer) {
+            stopButtonPushed();
+            runButtonPushed();
+        }
+    });
+}
 

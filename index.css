@@ -4,8 +4,7 @@ table, td, th {
 }
 
 .controls {
-    position: absolute;
-    bottom: 0;
+    text-align: center;
 }
 
 .alive {
@@ -25,7 +24,7 @@ table, td, th {
 }
 
 #table_div {
-    position: absolute;
+    /*position: absolute;*/
     height: 800px;
     width: 800px;
     left:0;
@@ -35,5 +34,20 @@ table, td, th {
     overflow: auto;
     border: 1px solid black;
 }
+
+h1, h2,  p{
+    text-align: center;
+}
+
+button:disabled {
+    background-color: darkblue;
+}
+
+#speedSlider {
+
+    text-align: center;
+}
+
+
 
 

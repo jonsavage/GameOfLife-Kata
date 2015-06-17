@@ -3,13 +3,20 @@
     <head>
         <meta charset="utf-8">
         <title>index</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
         <link rel="stylesheet" href="index.css">
+        <script src="index.js"></script>
+
+
+        <script src="simple-slider.js"></script>
+        <link href="simple-slider.css" rel="stylesheet" type="text/css" />
+
+
     </head>
     <body onload="initGame()">
-        <script src="index.js"></script>
-        <input type="button" value="step" onclick="doStep();">
-        <input type="button" id="runButton"value="run" onclick="runButtonPushed();">
-        <input type="button" id="stopButton" value="stop"  onclick="stopButtonPushed();">
+        <h1>Conway's Game of Life</h1>
+
         <br>
 
         <div id="table_div">
@@ -19,10 +26,26 @@
         <br>
 
         <div class="controls">
-            <input type="button" value="expand east" onclick="expandEast();">
-            <input type="button" value="expand west" onclick="expandWest();">
-            <input type="button" value="expand south" onclick="expandSouth();">
-            <input type="button" value="expand north" onclick="expandNorth();">
+            <input type="button" value="step" onclick="doStep();">
+            <input type="button" class="cbutton" id="runButton"value="run" onclick="runButtonPushed();">
+            <input type="button" class="cbutton" id="stopButton" value="stop"  onclick="stopButtonPushed();">
+            <input type="button" value="Expand Table" onclick="expandTableButtonPushed();">
+
         </div>
+        <input type="text" id="speedSlider" data-slider="true" value="1.0" data-slider-range="0.1,2.0">
+        <h2>Rules:</h2>
+        <p>
+
+            1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.<br>
+            2. Any live cell with more than three live neighbours dies, as if by overcrowding. <br>
+            3. Any live cell with two or three live neighbours lives on to the next generation. <br>
+            4. Any dead cell with exactly three live neighbours becomes a live cell.
+            <br>
+            <br>
+            Written as a solution to <a href="http://www.codingdojo.org/cgi-bin/index.pl?action=browse&diff=1&id=KataGameOfLife">http://www.codingdojo.org/cgi-bin/index.pl?action=browse&diff=1&id=KataGameOfLife</a>
+        </p>
+
+        <!-- Activate Simple Slider on your input -->
+
     </body>
 </html>
