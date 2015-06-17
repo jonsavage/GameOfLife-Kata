@@ -34,23 +34,19 @@ function doStep() {
 
 function generateNextState() {
     var neighborCount = 0;
-    for (var i = 1; i < cells.length - 1; i++) {
-        for (var j = 1; j < cells[i].length - 1; j++) {
+    for (var i = 0; i < cells.length - 1; i++) {
+        for (var j = 0; j < cells[i].length - 1; j++) {
 
 
-            //if(i == 0 && j == 0) {
-            //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
-            //        cells[0][0].isAlive = true;
-            //        updateTable();
-            //        expandEast();
-            //        expandEast();
-            //        expandNorth();
-            //        expandNorth();
-            //        generateNextState();
-            //
-            //        return;
-            //    }
-            //}
+            if(i == 0 && j == 0) {
+                if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
+                    cells[0][0].isAlive = true;
+                    expandWest();
+                    expandNorth();
+                    generateNextState();
+                    return;
+                }
+            }
 
             //else if(i == 0 && i < cells[i].length) {
             //    if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
@@ -74,6 +70,14 @@ function generateNextState() {
 
 function countNeighbors(i, j) {
     var neighborCount = 0;
+    if(typeof cells[i-1] == "undefined")
+        return 0;
+    if(typeof cells[i+1] == "undefined")
+        return 0;
+    if(typeof cells[i][j-1] == "undefined")
+        return 0;
+    if(typeof cells[i][j+1] == "undefined")
+        return 0;
     if(cells[i-1][j-1].isAlive) {
         neighborCount++;
     }
