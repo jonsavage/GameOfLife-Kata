@@ -38,7 +38,7 @@ function generateNextState() {
         for (var j = 0; j < cells[i].length; j++) {
 
 
-            if(i == 0 && j == 0) {
+            if(i == 0 && j == 0) { // top left corner auto expand
                 if(cells[1][0].isAlive && (cells[0][1].isAlive && cells[1][1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandWest();
@@ -48,7 +48,7 @@ function generateNextState() {
                 }
             }
 
-            else if(i == 0 && j < cells[i].length - 2) {
+            else if(i == 0 && j < cells[i].length - 2) { // top row auto expand
                 if(cells[i+1][j-1].isAlive && (cells[i+1][j].isAlive && cells[i+1][j+1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandNorth();
@@ -57,7 +57,7 @@ function generateNextState() {
                 }
             }
 
-            else if(i == 0 && j == cells[i].length - 1) {
+            else if(i == 0 && j == cells[i].length - 1) { // top right corner auto expand
                 if(cells[i][j-1].isAlive && (cells[i+1][j-1].isAlive && cells[i+1][j].isAlive)) {
                     cells[i][j].nextState = true;
                     expandNorth();
@@ -66,6 +66,17 @@ function generateNextState() {
                     return;
                 }
             }
+
+            else if(j == cells[i].length - 1) { // rightmost column auto expand
+                if(cells[i-1][j-1].isAlive && (cells[i][j-1].isAlive && cells[i+1][j-1].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandEast();
+                    generateNextState();
+                    return;
+                }
+            }
+
+
             neighborCount = countNeighbors(i,j);
 
             if(cells[i][j].isAlive && (neighborCount == 2 || neighborCount == 3)) {
