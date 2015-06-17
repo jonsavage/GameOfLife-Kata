@@ -197,8 +197,6 @@ function expandEast() {
         cells[i] = cells[i].concat(new cell());
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
 
-        cells[i][cells[i].length-1].isAlive = false;
-        cells[i][cells[i].length-1].nextState = false;
         cells[i][cells[i].length-1].cell.y = i;
         cells[i][cells[i].length-1].cell.x = cells[i].length-1;
 
@@ -216,8 +214,6 @@ function expandWest() {
         cells[i] = cells[i].concat(new cell());
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
 
-        cells[i][cells[i].length-1].isAlive = false;
-        cells[i][cells[i].length-1].nextState = false;
         cells[i] = cells[i].reverse();
     }
     setupTable();
@@ -229,11 +225,8 @@ function expandNorth() {
     cells = cells.reverse();
     cells.push(newRow);
     cells = cells.reverse();
-    //var rev1 = cells.reverse().push(newRow);
     for (var i = 0; i < cells[0].length; i++) {
         cells[0][i] = new cell();
-        cells[0][i].isAlive = false;
-        cells[0][i].nextState = false;
     }
 
     setupTable();
@@ -242,30 +235,23 @@ function expandNorth() {
 
 function expandSouth() {
 
-    //cells = cells.concat(new Array(cells[0].length));
     rows = rows.concat(table.insertRow(cells.length));
     var newRow = new Array(cells[0].length);
 
     for (var i = 0; i < cells[0].length; i++) {
         newRow[i] = new cell();
         newRow[i].cell = rows[rows.length - 1].insertCell(i);
-        //newRow[i].cell.innerHTML = "0";
-        newRow[i].isAlive = false;
-        newRow[i].nextState = false;
         newRow[i].cell.y = cells.length;
         newRow[i].cell.x = i;
-
         newRow[i].cell.onclick = cellClickHandler;
-
     }
-
     cells.push(newRow);
     updateTable();
 }
 
 function cell() {
-    var isAlive;
-    var nextState;
+    var isAlive = false;
+    var nextState = false;
     var cell;
     var x;
     var y;
