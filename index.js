@@ -32,14 +32,11 @@ function initGame() {
 
 function setupScrolling() {
     if (table.addEventListener) {
-        // IE9, Chrome, Safari, Opera
-        table.addEventListener("mousewheel", MouseWheelHandler, false);
-        // Firefox
-        table.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+        table.addEventListener("mousewheel", MouseWheelHandler, false); // IE9, Chrome, Safari, Opera
+        table.addEventListener("DOMMouseScroll", MouseWheelHandler, false); // Firefox
     }
     // IE 6/7/8
     else table.attachEvent("onmousewheel", MouseWheelHandler);
-
 }
 
 function cell() {
@@ -69,8 +66,7 @@ function generateNextState() {
                     cells[i][j].nextState = true;
                     expandWest();
                     expandNorth();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -78,8 +74,7 @@ function generateNextState() {
                 if(cells[i+1][j-1].isAlive && (cells[i+1][j].isAlive && cells[i+1][j+1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandNorth();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -88,8 +83,7 @@ function generateNextState() {
                     cells[i][j].nextState = true;
                     expandNorth();
                     expandEast();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -98,8 +92,7 @@ function generateNextState() {
                     cells[i][j].nextState = true;
                     expandEast();
                     expandSouth();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -107,8 +100,7 @@ function generateNextState() {
                 if(cells[i-1][j-1].isAlive && (cells[i][j-1].isAlive && cells[i+1][j-1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandEast();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -117,8 +109,7 @@ function generateNextState() {
                     cells[i][j].nextState = true;
                     expandWest();
                     expandSouth();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -126,8 +117,7 @@ function generateNextState() {
                 if(cells[i-1][j-1].isAlive && (cells[i-1][j].isAlive && cells[i-1][j+1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandSouth();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -135,8 +125,7 @@ function generateNextState() {
                 if(cells[i-1][j+1].isAlive && (cells[i][j+1].isAlive && cells[i+1][j+1].isAlive)) {
                     cells[i][j].nextState = true;
                     expandWest();
-                    generateNextState();
-                    return;
+                    continue;
                 }
             }
 
@@ -217,10 +206,7 @@ function setupTable() {
             cells[i][j].cell.x = j;
             cells[i][j].cell.y = i;
 
-            cells[i][j].cell.onclick = function() {
-                flipCell(this.x, this.y);
-                updateTable();
-            };
+            cells[i][j].cell.onclick = cellClickHandler;
         }
         rows[i] = row;
     }
@@ -238,10 +224,7 @@ function expandEast() {
         cells[i][cells[i].length-1].cell.y = i;
         cells[i][cells[i].length-1].cell.x = cells[i].length-1;
 
-        cells[i][cells[i].length-1].cell.onclick = function() {
-            flipCell(this.x, this.y);
-            updateTable();
-        };
+        cells[i][cells[i].length-1].cell.onclick = cellClickHandler;
     }
 
     updateTable();
@@ -294,10 +277,7 @@ function expandSouth() {
         newRow[i].cell.y = cells.length;
         newRow[i].cell.x = i;
 
-        newRow[i].cell.onclick = function() {
-            flipCell(this.x, this.y);
-            updateTable();
-        };
+        newRow[i].cell.onclick = cellClickHandler;
 
     }
 
@@ -335,6 +315,11 @@ function run() {
 function stop() {
     window.clearInterval(timer);
 }
+
+var cellClickHandler = function() {
+    flipCell(this.x, this.y);
+    updateTable();
+};
 
 
 

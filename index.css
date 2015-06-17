@@ -1,6 +1,6 @@
 
-td {
-    border-color: red;
+table, td, th {
+    border: 1px solid black;
 }
 
 .controls {
@@ -17,6 +17,8 @@ td {
 }
 
 #grid {
+    border-collapse: collapse;
+
     alignment: center;
     min-width: 100%;
     min-height: 100%;
@@ -26,8 +28,10 @@ td {
     position: absolute;
     height: 800px;
     width: 800px;
-    left: 15%;
-    right: 15%;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
     overflow: auto;
     border: 1px solid black;
 }
