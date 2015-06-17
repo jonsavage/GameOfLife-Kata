@@ -291,6 +291,18 @@ function stopButtonPushed() {
 
 var cellClickHandler = function() {
     cells[this.y][this.x].flip();
+    if(this.x == 0) {
+        expandWest();
+    }
+    else if(this.x == cells[0].length - 1) {
+        expandEast();
+    }
+    if(this.y == 0) {
+        expandNorth();
+    }
+    else if(this.y == cells.length - 1) {
+        expandSouth();
+    }
     updateTable();
 };
 
