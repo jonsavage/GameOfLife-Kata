@@ -98,6 +98,15 @@ function generateNextState() {
                 }
             }
 
+            else if(i == cells.length - 1) { // bottom left corner auto expand
+                if(cells[i-1][j-1].isAlive && (cells[i-1][j].isAlive && cells[i-1][j+1].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandSouth();
+                    generateNextState();
+                    return;
+                }
+            }
+
 
 
 
