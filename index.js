@@ -107,6 +107,15 @@ function generateNextState() {
                 }
             }
 
+            else if(j == 0) { // bottom left corner auto expand
+                if(cells[i-1][j+1].isAlive && (cells[i][j+1].isAlive && cells[i+1][j+1].isAlive)) {
+                    cells[i][j].nextState = true;
+                    expandWest();
+                    generateNextState();
+                    return;
+                }
+            }
+
 
 
 
