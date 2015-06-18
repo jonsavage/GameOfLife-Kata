@@ -13,14 +13,14 @@ function initGame(gameTable) {
     cells = Array.matrix(DEFAULT_SIZE,DEFAULT_SIZE);
     this.table = gameTable;
 
-    makeTable();
-    updateTable();
+    initTable();
+    updateTableCells();
 }
 
 function step() {
     generateNextState();
     advanceStates();
-    updateTable();
+    updateTableCells();
 }
 
 function generateNextState() {
@@ -156,15 +156,15 @@ function advanceStates() {
     }
 }
 
-function updateTable() {
+function updateTableCells() {
     for (var i = 0; i < cells.length; i++) {
         for (var j = 0; j < cells[i].length; j++) {
-            cells[i][j].updateCell();
+            cells[i][j].updateCellStyle();
         }
     }
 }
 
-function makeTable() {
+function initTable() {
     table.innerHTML = "";
     rows = new Array(cells.length);
     var row;
@@ -192,7 +192,7 @@ function expandEast() {
         cells[i][cells[i].length-1].cell.onclick = cellClickHandler;
     }
 
-    updateTable();
+    updateTableCells();
 }
 
 function expandWest() {
@@ -203,8 +203,8 @@ function expandWest() {
         cells[i][cells[i].length-1].cell = rows[i].insertCell(cells[i].length-1);
         cells[i] = cells[i].reverse();
     }
-    makeTable();
-    updateTable();
+    initTable();
+    updateTableCells();
 }
 
 function expandNorth() {
@@ -217,8 +217,8 @@ function expandNorth() {
         cells[0][i] = new cell();
     }
 
-    makeTable();
-    updateTable();
+    initTable();
+    updateTableCells();
 }
 
 function expandSouth() {
@@ -234,7 +234,7 @@ function expandSouth() {
         newRow[i].cell.onclick = cellClickHandler;
     }
     cells.push(newRow);
-    updateTable();
+    updateTableCells();
 }
 
 function expand() {
@@ -245,12 +245,18 @@ function expand() {
 }
 
 function cell() {
-    var isAlive = false;
-    var nextState = false;
+    var isAlive;
+    var nextState;
     var cell;
     var x;
     var y;
-    this.updateCell = function() {
+
+    var _construct = function(that) {
+        that.isAlive = false;
+        that.nextState = false;
+    }(this);
+
+    this.updateCellStyle = function() {
         this.cell.className = this.isAlive ? ALIVE_CLASSNAME : DEAD_CLASSNAME;
     };
     this.flip = function() {
@@ -272,7 +278,7 @@ var cellClickHandler = function() {
     else if(this.y == cells.length - 1) {
         expandSouth();
     }
-    updateTable();
+    updateTableCells();
 };
 
 // http://www.stephanimoroni.com/how-to-create-a-2d-array-in-javascript/
