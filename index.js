@@ -9,6 +9,8 @@ var timer;
 var cells;
 var table;
 var rows;
+var stopButton;
+var runButton;
 
 function initGame() {
     initDOMElements();
@@ -23,12 +25,15 @@ function initGame() {
 }
 
 function setupScrolling() {
-    if (table.addEventListener) {
-        table.addEventListener("mousewheel", MouseWheelHandler, false); // IE9, Chrome, Safari, Opera
-        table.addEventListener("DOMMouseScroll", MouseWheelHandler, false); // Firefox
+    if(table) {
+
+        if (table.addEventListener) {
+            table.addEventListener("mousewheel", MouseWheelHandler, false); // IE9, Chrome, Safari, Opera
+            table.addEventListener("DOMMouseScroll", MouseWheelHandler, false); // Firefox
+        }
+        // IE 6/7/8
+        else table.attachEvent("onmousewheel", MouseWheelHandler);
     }
-    // IE 6/7/8
-    else table.attachEvent("onmousewheel", MouseWheelHandler);
 }
 
 function doStep() {
@@ -179,19 +184,22 @@ function updateTable() {
 }
 
 function initTable() {
-    table.innerHTML = "";
-    rows = new Array(cells.length);
-    var row;
-    for (var i = 0; i < cells.length; i++) {
-        row = table.insertRow(i);
-        for (var j = 0; j < cells[i].length; j++) {
-            cells[i][j].cell = row.insertCell(j);
-            cells[i][j].cell.x = j;
-            cells[i][j].cell.y = i;
+    if(table) {
 
-            cells[i][j].cell.onclick = cellClickHandler;
+        table.innerHTML = "";
+        rows = new Array(cells.length);
+        var row;
+        for (var i = 0; i < cells.length; i++) {
+            row = table.insertRow(i);
+            for (var j = 0; j < cells[i].length; j++) {
+                cells[i][j].cell = row.insertCell(j);
+                cells[i][j].cell.x = j;
+                cells[i][j].cell.y = i;
+
+                cells[i][j].cell.onclick = cellClickHandler;
+            }
+            rows[i] = row;
         }
-        rows[i] = row;
     }
 }
 
@@ -282,21 +290,21 @@ function stopButtonPushed() {
 }
 
 function enableStopButton() {
-    document.getElementById("stopButton").disabled = false;
-    //document.getElementById("stopButton").style.backgroundColor = null;
+    stopButton.disabled = false;
 }
 
 function disableStopButton() {
-    document.getElementById("stopButton").disabled = true;
-    //document.getElementById("stopButton").style.backgroundColor = null;
+    if(stopButton) {
+        stopButton.disabled = true;
+    }
 }
 
 function disableRunButton() {
-    document.getElementById("runButton").disabled = true;
+    runButton.disabled = true;
 }
 
 function enableRunButton() {
-    document.getElementById("runButton").disabled = false;
+    runButton.disabled = false;
 }
 
 function expandTableButtonPushed() {
@@ -341,6 +349,8 @@ function setupButtonStates() {
 
 function initDOMElements() {
     table = document.getElementById("grid");
+    stopButton = document.getElementById("stopButton");
+    runButton = document.getElementById("runButton")
 }
 
 // http://www.stephanimoroni.com/how-to-create-a-2d-array-in-javascript/
@@ -359,12 +369,16 @@ Array.matrix = function(numrows, numcols){
 
 // http://loopj.com/jquery-simple-slider/
 function setupSlider() {
-    $("#speedSlider").bind("slider:changed", function (event, data) {
-        timerIntervalMultiplier = data.value;
-        if(timer) {
-            stopButtonPushed();
-            runButtonPushed();
-        }
-    });
+    if(document.getElementById("speedSlider")) {
+
+        $("#speedSlider").bind("slider:changed", function (event, data) {
+            timerIntervalMultiplier = data.value;
+
+            if(timer) {
+                stopButtonPushed();
+                runButtonPushed();
+            }
+        });
+    }
 }
 
