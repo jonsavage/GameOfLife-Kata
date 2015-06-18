@@ -77,8 +77,9 @@ QUnit.test( "Dead Cells with five neighbors stays dead", function( assert ) {
     initGame(document.getElementById("grid"));
 
     cells[3][5].isAlive = true;
+
     cells[4][5].isAlive = true;
-    cells[4][5].isAlive = true;
+
     cells[5][5].isAlive = true;
     cells[5][6].isAlive = true;
     cells[5][7].isAlive = true;
@@ -91,13 +92,15 @@ QUnit.test( "Dead Cells with five neighbors stays dead", function( assert ) {
 QUnit.test( "Dead Cells with six neighbors stays dead", function( assert ) {
     initGame(document.getElementById("grid"));
 
-    //cells[3][5].isAlive = true;
-    //cells[3][7].isAlive = true;
-    //cells[4][5].isAlive = true;
-    //cells[4][7].isAlive = true;
-    //cells[5][5].isAlive = true;
-    //cells[5][7].isAlive = true;
-    //cells[5][7].isAlive = true;
+    cells[3][5].isAlive = true;
+    cells[3][7].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][7].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][7].isAlive = true;
+
 
     step();
 
@@ -107,13 +110,15 @@ QUnit.test( "Dead Cells with six neighbors stays dead", function( assert ) {
 QUnit.test( "Dead Cells with seven neighbors stays dead", function( assert ) {
     initGame(document.getElementById("grid"));
 
-    //cells[3][5].isAlive = true;
-    //cells[3][7].isAlive = true;
-    //cells[4][5].isAlive = true;
-    //cells[4][7].isAlive = true;
-    //cells[5][5].isAlive = true;
-    //cells[5][6].isAlive = true;
-    //cells[5][7].isAlive = true;
+    cells[3][5].isAlive = true;
+    cells[3][6].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][7].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][6].isAlive = true;
+    cells[5][7].isAlive = true;
 
     step();
 
@@ -123,7 +128,13 @@ QUnit.test( "Dead Cells with seven neighbors stays dead", function( assert ) {
 QUnit.test( "Dead Cells with eight neighbors stays dead", function( assert ) {
     initGame(document.getElementById("grid"));
 
+    cells[3][5].isAlive = true;
+    cells[3][6].isAlive = true;
+    cells[3][7].isAlive = true;
+
     cells[4][5].isAlive = true;
+    cells[4][7].isAlive = true;
+
     cells[5][5].isAlive = true;
     cells[5][6].isAlive = true;
     cells[5][7].isAlive = true;
@@ -189,5 +200,104 @@ QUnit.test( "Alive Cells with four neighbors die", function( assert ) {
     assert.ok(cells[5][5].isAlive == true, "Passed!", "failed");
 
 });
+
+QUnit.test( "Alive cells with five neighbors die", function( assert ) {
+    initGame(document.getElementById("grid"));
+
+    cells[3][5].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][6].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][6].isAlive = true;
+    cells[5][7].isAlive = true;
+
+    step();
+
+    assert.ok(cells[4][6].isAlive == false, "Passed!", "failed");
+});
+
+QUnit.test( "Alive cells with six neighbors die", function( assert ) {
+    initGame(document.getElementById("grid"));
+
+    cells[3][5].isAlive = true;
+    cells[3][7].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][6].isAlive = true;
+    cells[4][7].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][7].isAlive = true;
+
+
+    step();
+
+    assert.ok(cells[4][6].isAlive == false, "Passed!", "failed");
+});
+
+QUnit.test( "Alive cells with seven neighbors die", function( assert ) {
+    initGame(document.getElementById("grid"));
+
+    cells[3][5].isAlive = true;
+    cells[3][6].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][6].isAlive = true;
+    cells[4][7].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][6].isAlive = true;
+    cells[5][7].isAlive = true;
+
+    step();
+
+    assert.ok(cells[4][6].isAlive == false, "Passed!", "failed");
+});
+
+QUnit.test( "Alive cells with eight neighbors die", function( assert ) {
+    initGame(document.getElementById("grid"));
+
+    cells[3][5].isAlive = true;
+    cells[3][6].isAlive = true;
+    cells[3][7].isAlive = true;
+
+    cells[4][5].isAlive = true;
+    cells[4][6].isAlive = true;
+    cells[4][7].isAlive = true;
+
+    cells[5][5].isAlive = true;
+    cells[5][6].isAlive = true;
+    cells[5][7].isAlive = true;
+
+    step();
+
+    assert.ok(cells[4][6].isAlive == false, "Passed!", "failed");
+});
+
+QUnit.test( "Test Stepping with blinker pattern", function( assert ) {
+    initGame(document.getElementById("grid"));
+
+    cells[5][5].isAlive = true;
+    cells[5][6].isAlive = true;
+    cells[5][7].isAlive = true;
+
+    step();
+
+    assert.ok(cells[4][6].isAlive == true, "Passed!", "failed");
+    assert.ok(cells[5][6].isAlive == true, "Passed!", "failed");
+    assert.ok(cells[6][6].isAlive == true, "Passed!", "failed");
+
+    step();
+
+    assert.ok(cells[5][5].isAlive == true, "Passed!", "failed");
+    assert.ok(cells[5][6].isAlive == true, "Passed!", "failed");
+    assert.ok(cells[5][7].isAlive == true, "Passed!", "failed");
+
+});
+
+
+
 
 
